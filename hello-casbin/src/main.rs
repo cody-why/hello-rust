@@ -1,7 +1,7 @@
 /*** 
  * @Author: plucky
  * @Date: 2022-07-04 13:45:05
- * @LastEditTime: 2022-07-06 22:14:59
+ * @LastEditTime: 2022-07-06 22:23:42
  * @Description: casbin的测试,在线生成规则:
  * https://casbin.org/zh-CN/editor
  */
@@ -9,6 +9,7 @@
 use dotenv::dotenv;
 use diesel_adapter::casbin::prelude::*;
 use diesel_adapter::DieselAdapter;
+
 // use sqlx_adapter::casbin::prelude::*;
 // use sqlx_adapter::casbin::Result; 
 // use sqlx_adapter::{casbin::{DefaultModel,Enforcer}, SqlxAdapter};

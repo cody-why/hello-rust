@@ -8,7 +8,10 @@ edition = "2021"
 [dependencies]
 tokio = { version = "1.19", features = ["full"] }
 lazy_static = "1"
-once_cell = "1"
 
 diesel = { version = "1.4.8", features = ["mysql","r2d2"] }
 dotenv = "0.15"
+
+tracing = "0.1"
+tracing-subscriber = { version = "0.3", features = ["time"] }
+time = {version = "0.3",features = ["macros","local-offset"]}

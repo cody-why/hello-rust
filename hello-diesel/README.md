@@ -23,6 +23,10 @@ diesel migration run
 
 // 或者不同步数据库,只输出描述文件
 diesel print-schema
+// 重新生成表
+diesel migration revert
+diesel migration run
+
 ```
 
 1.普通连接

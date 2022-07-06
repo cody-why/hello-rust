@@ -1,12 +1,13 @@
 /*** 
  * @Author: plucky
  * @Date: 2022-07-05 19:00:17
- * @LastEditTime: 2022-07-06 21:28:31
+ * @LastEditTime: 2022-07-07 00:24:45
  * @Description: 
  */
 
 pub mod schema;
 pub mod models;
+pub mod db_service;
 
  #[macro_use]
 extern crate diesel;
@@ -47,9 +48,8 @@ pub fn get_connection() -> MysqlPooledConnection {
 // 初始化连接池
 pub fn init_pool() -> Pool<MysqlPool> {
     dotenv().ok();
-    let database_url = env::var("DATABASE_URL")
-            .expect("DATABASE_URL must be set");
-    // new 方法创建一个新的连接池，连接池中的连接数量是5，连接的超时时间是10秒。
+    let database_url = env::var("DATABASE_URL").expect("DATABASE_URL must be set");
+    // 创建一个新的连接池
     let manager = ConnectionManager::<MysqlConnection>::new(database_url);
     let pool = Pool::builder()
         .max_size(10)
