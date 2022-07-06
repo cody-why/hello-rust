@@ -1,16 +1,17 @@
 /*** 
  * @Author: plucky
  * @Date: 2022-07-04 13:45:05
- * @LastEditTime: 2022-07-06 11:25:51
+ * @LastEditTime: 2022-07-06 22:14:59
  * @Description: casbin的测试,在线生成规则:
  * https://casbin.org/zh-CN/editor
  */
 
-use std::collections::HashMap;
-
-use sqlx_adapter::casbin::prelude::*;
-use sqlx_adapter::casbin::Result; 
-use sqlx_adapter::{casbin::{DefaultModel,Enforcer}, SqlxAdapter};
+use dotenv::dotenv;
+use diesel_adapter::casbin::prelude::*;
+use diesel_adapter::DieselAdapter;
+// use sqlx_adapter::casbin::prelude::*;
+// use sqlx_adapter::casbin::Result; 
+// use sqlx_adapter::{casbin::{DefaultModel,Enforcer}, SqlxAdapter};
 
 
 
@@ -20,8 +21,8 @@ async fn  main()->Result<()> {
     dotenv().ok();
 
     let m = DefaultModel::from_str(MODEL_AUTH).await?;
-    let a = SqlxAdapter::new("mysql://root:newpassword@192.168.1.199:3306/casbin", 5).await?;
-
+    //let a = SqlxAdapter::new("mysql://root:newpassword@192.168.1.199:3306/casbin", 5).await?;
+    let a = DieselAdapter::new("mysql://root:newpassword@192.168.1.199:3306/casbin", 5).unwrap();
     println!("get_model:{:?}", m.get_model().keys());
 
     let mut e = Enforcer::new(m, a).await?;

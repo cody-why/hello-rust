@@ -1,7 +1,7 @@
 /*** 
  * @Author: plucky
  * @Date: 2022-07-05 19:00:17
- * @LastEditTime: 2022-07-06 12:12:33
+ * @LastEditTime: 2022-07-06 21:28:31
  * @Description: 
  */
 
@@ -10,7 +10,7 @@ pub mod models;
 
  #[macro_use]
 extern crate diesel;
-extern crate dotenv;
+
 
 use diesel::{r2d2::{ConnectionManager, PooledConnection}};
 use dotenv::dotenv;
@@ -30,7 +30,7 @@ lazy_static::lazy_static! {
 
 /// 普通连接
 pub fn establish_connection() -> MysqlConnection {
-    dotenv().ok();
+
     let database_url = env::var("DATABASE_URL")
         .expect("DATABASE_URL must be set");
         MysqlConnection::establish(&database_url)
@@ -47,12 +47,15 @@ pub fn get_connection() -> MysqlPooledConnection {
 // 初始化连接池
 pub fn init_pool() -> Pool<MysqlPool> {
     dotenv().ok();
-
     let database_url = env::var("DATABASE_URL")
             .expect("DATABASE_URL must be set");
     // new 方法创建一个新的连接池，连接池中的连接数量是5，连接的超时时间是10秒。
     let manager = ConnectionManager::<MysqlConnection>::new(database_url);
-    let pool = Pool::builder().build(manager).expect("Failed to create pool");
+    let pool = Pool::builder()
+        .max_size(10)
+        .min_idle(Some(1))
+        .test_on_check_out(true)
+        .build(manager).expect("Failed to create pool");
     pool
 
 }

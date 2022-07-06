@@ -2,4 +2,9 @@
 # see diesel.rs/guides/configuring-diesel-cli
 
 [print_schema]
-file = "schema.rs"
+file = "src/schema.rs"
+
+# This will cause only the users and posts tables to be output
+filter = { only_tables = ["users", "posts"] }
+# This will cause all tables *except* the comments table to be
+#filter = { except_tables = ["except"] }

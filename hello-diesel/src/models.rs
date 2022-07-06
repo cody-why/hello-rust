@@ -1,7 +1,7 @@
 /*** 
  * @Author: plucky
  * @Date: 2022-07-05 21:46:32
- * @LastEditTime: 2022-07-06 09:13:20
+ * @LastEditTime: 2022-07-06 18:39:02
  * @Description: 
  */
 
@@ -23,3 +23,5 @@ pub struct NewPost<'a> {
     pub title: &'a str,
     pub body: &'a str,
 }
+
+
