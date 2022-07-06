@@ -1,0 +1,8 @@
+-- Your SQL goes here
+CREATE TABLE posts (
+  id BIGINT NOT NULL AUTO_INCREMENT,
+  title VARCHAR(128) NOT NULL,
+  body TEXT NOT NULL,
+  published BOOLEAN NOT NULL DEFAULT 0,
+  PRIMARY KEY(id)
+)
