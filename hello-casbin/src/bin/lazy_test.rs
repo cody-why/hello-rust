@@ -1,14 +1,14 @@
 /*** 
  * @Author: plucky
  * @Date: 2022-07-06 10:05:04
- * @LastEditTime: 2022-07-06 10:13:53
+ * @LastEditTime: 2022-07-07 09:35:23
  * @Description: 
  */
 
 use std::collections::HashMap;
 
 use once_cell::sync::Lazy;
-#[macro_use]
+// #[macro_use]
 extern crate lazy_static;
 
 // 全局变量用lazy_static实现
