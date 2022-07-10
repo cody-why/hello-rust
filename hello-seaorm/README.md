@@ -2,7 +2,7 @@
 
 [https://www.sea-ql.org/SeaORM/docs/index]()
 
-##### sea-orm-cli 数据库迁移
+##### 数据库迁移(把表同步到数据库)
 
 ```
 * cargo install sea-orm-cli
@@ -10,8 +10,7 @@
 * sea-orm-cli migrate init
 ```
 
-
-##### [从数据库生成实](https://www.sea-ql.org/sea-orm-tutorial/ch01-04-entity-generation.html#generate-entity-from-database)
+##### [从数据库生成实体](https://www.sea-ql.org/sea-orm-tutorial/ch01-04-entity-generation.html#generate-entity-from-database)(把数据库的表同步到项目)
 
 ```
 * sea-orm-cli generate entity \
