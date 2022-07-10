@@ -1,7 +1,7 @@
 /*** 
  * @Author: plucky
  * @Date: 2022-07-08 06:50:02
- * @LastEditTime: 2022-07-10 08:09:34
+ * @LastEditTime: 2022-07-10 09:05:35
  * @Description: 
  */
 
@@ -19,9 +19,9 @@ async fn main() {
     env::set_var("RUST_LOG", "debug");
     config::init_log();
 
-    tracing::info3!("Hello, world! {}","sea-orm");
+    //tracing::info3!("Hello, world! {}","sea-orm");
  
-   test_trace("jack".into());
+    test_trace("jack".into());
     // std::thread::sleep(std::time::Duration::from_secs(1));
     run().await.unwrap();
 }
