@@ -18,7 +18,6 @@ debug_print!
 
 第4步改tracing的源码，增加info3!，不想要文件名
 
-
 ##### 2.如果不想输出select,只输出update、insert
 
 ~/.cargo/registry/src/[github.com-1ecc6299db9ec823/sea-orm-0.8.0/src/driver/sqlx_mysql.rs](http://github.com-1ecc6299db9ec823/sea-orm-0.8.0/src/driver/sqlx_mysql.rs)
@@ -42,7 +41,6 @@ cargo check
 
 cargo build
 ```
-
 
 ##### 3.sqlx 输出sql去掉格式化
 
@@ -74,7 +72,6 @@ self.sql
 )
 ```
 
-
 82行，我只要2个单词返回，select XX等
 
 parse_query_summary
@@ -95,7 +92,7 @@ cargo clean -p tracing
 
 ~/.cargo/registry/src/[github.com-1ecc6299db9ec823/tracing-0.1.35/src/macros.rs](http://github.com-1ecc6299db9ec823/tracing-0.1.35/src/macros.rs)
 
-加入以下代码
+增加以下代码:
 
 ```rust
 /// info3! for sea-rom, no file name, no parent.
