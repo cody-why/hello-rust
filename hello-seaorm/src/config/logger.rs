@@ -1,7 +1,7 @@
 /*** 
  * @Author: plucky
  * @Date: 2022-07-08 16:00:59
- * @LastEditTime: 2022-07-08 16:01:13
+ * @LastEditTime: 2022-07-09 22:59:16
  * @Description: 
  */
 pub use sea_orm::{DbErr};
@@ -21,7 +21,7 @@ pub fn init_log(){
     .with_max_level(tracing::Level::from_str(level).unwrap())
     .with_target(false)
     .with_timer(local_time)
-    .with_line_number(true)
     .with_file(true)
+    .with_line_number(true)
     .init();
 }
