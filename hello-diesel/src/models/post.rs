@@ -1,11 +1,11 @@
 /*** 
  * @Author: plucky
- * @Date: 2022-07-05 21:46:32
- * @LastEditTime: 2022-07-07 00:48:10
+ * @Date: 2022-07-08 00:10:00
+ * @LastEditTime: 2022-07-08 00:18:00
  * @Description: 
  */
 
-use super::schema::*;
+use super::prelude::*;
 
 #[derive(Queryable, Debug)]
 pub struct Post {
@@ -23,11 +23,9 @@ pub struct NewPost<'a> {
     pub body: &'a str,
 }
 
-
 #[derive(QueryableByName, Debug)]
 #[table_name = "short_links"]
 pub struct ShortLinks {
     pub id: u32,
     pub url: String,
 }
-

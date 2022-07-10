@@ -1,7 +1,7 @@
 /*** 
  * @Author: plucky
  * @Date: 2022-07-05 19:00:17
- * @LastEditTime: 2022-07-07 00:24:45
+ * @LastEditTime: 2022-07-08 06:45:56
  * @Description: 
  */
 
@@ -9,13 +9,16 @@ pub mod schema;
 pub mod models;
 pub mod db_service;
 
- #[macro_use]
+pub use tracing::*;
+
+#[macro_use]
 extern crate diesel;
 
 
-use diesel::{r2d2::{ConnectionManager, PooledConnection}};
+
+use diesel::{r2d2::{ConnectionManager, PooledConnection, HandleError, HandleEvent, event::TimeoutEvent}};
 use dotenv::dotenv;
-use std::env;
+use std::{env, error};
 
 pub use  diesel::{prelude::*, r2d2::Pool};
 
@@ -49,16 +52,47 @@ pub fn get_connection() -> MysqlPooledConnection {
 pub fn init_pool() -> Pool<MysqlPool> {
     dotenv().ok();
     let database_url = env::var("DATABASE_URL").expect("DATABASE_URL must be set");
+
+    // let db_helper_threads=10;
+    // let thread_pool = Arc::new(ScheduledThreadPool::new(db_helper_threads));
+    
     // 创建一个新的连接池
     let manager = ConnectionManager::<MysqlConnection>::new(database_url);
     let pool = Pool::builder()
         .max_size(10)
         .min_idle(Some(1))
         .test_on_check_out(true)
+        .error_handler(Box::new(LoggingHandler{}))
+        .event_handler(Box::new(LoggingHandler{}))
+
+        // .thread_pool(thread_pool)
         .build(manager).expect("Failed to create pool");
+    tracing::debug!("init_pool {:?}", pool.state());
+    
+    
+    
     pool
 
 }
+
+#[derive(Copy, Clone, Debug)]
+pub struct LoggingHandler;
+// 输出错误日志
+impl<E> HandleError<E> for LoggingHandler
+where
+    E: error::Error,
+{
+    fn handle_error(&self, error: E) {
+        tracing::error!("{}", error);
+    }
+}
+// 输出事件日志,只实现了timeout事件
+impl HandleEvent for LoggingHandler{
+    fn handle_timeout(&self, event: TimeoutEvent) {
+        tracing::debug!("{:?}", event);
+    }
+}
+
 
 // tests
 #[cfg(test)]

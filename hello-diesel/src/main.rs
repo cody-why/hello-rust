@@ -5,18 +5,19 @@
  * @Description: 
  */
 
+pub use tracing::*;
 
 
 use time::UtcOffset;
 use tracing_subscriber::fmt::time::OffsetTime;
-use std::{env, str::FromStr};
+use std::{env, str::FromStr, thread};
 
 use hello_diesel::db_service::*;
 
 fn main() {
     init_log();
     dotenv::from_path(".env").ok();
-    tracing::debug!("hello_diesel {:?}",env::var("DATABASE_URL"));
+    debug!("hello_diesel {:?}",env::var("DATABASE_URL"));
 
     query_by_sql();
 
@@ -31,6 +32,8 @@ fn main() {
     delete_post();
     // query_posts();
     paginate_posts();
+
+    thread::sleep(std::time::Duration::new(200, 0));
 }
 
 fn init_log(){
@@ -41,8 +44,9 @@ fn init_log(){
 
     );
     
+    let level = "debug";
     tracing_subscriber::fmt()
-    .with_max_level(tracing::Level::from_str("debug").unwrap())
+    .with_max_level(tracing::Level::from_str(level).unwrap())
     .with_target(false)
     .with_timer(local_time)
     .with_line_number(true)
