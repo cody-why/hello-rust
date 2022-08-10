@@ -1,7 +1,7 @@
 /*** 
  * @Author: plucky
  * @Date: 2022-07-08 16:00:59
- * @LastEditTime: 2022-07-09 22:59:16
+ * @LastEditTime: 2022-07-10 16:25:27
  * @Description: 
  */
 pub use sea_orm::{DbErr};
@@ -15,7 +15,7 @@ pub fn init_log(){
         time::UtcOffset::from_hms(8, 0, 0).unwrap(),
         time::format_description::parse("[year]-[month]-[day] [hour]:[minute]:[second].[subsecond digits:3]").unwrap(),
     );
-    
+    //tracing_subscriber::fmt().with_timer(local_time).init();
     let level = "debug";
     tracing_subscriber::fmt()
     .with_max_level(tracing::Level::from_str(level).unwrap())

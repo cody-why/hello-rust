@@ -19,4 +19,4 @@ dotenv = "0.15"
 
 once_cell = "1"
 
-#log = "*"
+criterion= "*"

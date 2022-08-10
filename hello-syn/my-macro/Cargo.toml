@@ -1,0 +1,16 @@
+[package]
+name = "my-macro"
+version = "0.1.0"
+edition = "2021"
+
+# See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
+
+#过程宏需要设置这个
+[lib]
+proc-macro = true
+
+[dependencies]
+syn={version = "1", features = ["full"]}
+quote = "1"
+devise="0.3"
+anyhow = "1"

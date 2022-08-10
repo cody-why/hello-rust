@@ -1,0 +1,20 @@
+[
+	{
+		"desc": "默认",
+		"name": "api",
+		"isDir": true,
+		"children": [
+			{
+				"name": "abc",
+				"desc": "abc",
+				"method": "GET",
+				"host": "http::/localhost:3000",
+				"path": "/abc",
+				"requestBody": {
+					"contentType": "json",
+					"content": null
+				}
+			}
+		]
+	}
+]

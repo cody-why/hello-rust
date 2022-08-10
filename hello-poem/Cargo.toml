@@ -1,0 +1,17 @@
+[package]
+name = "hello-poem"
+version = "0.1.0"
+edition = "2021"
+
+# See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
+
+[dependencies]
+poem = "1"
+poem-openapi = { version = "2", features = ["swagger-ui","rapidoc","redoc"]}
+tokio = { version = "1", features = ["full"] }
+
+serde = { version = "1", features = ["derive"] }
+tracing-subscriber = { version ="*", features = ["env-filter","time"] }
+tracing="0.1"
+
+ time = {version = "0.3"}
