@@ -1,7 +1,7 @@
-/**
+/***
  * @Author: plucky
  * @Date: 2022-08-10 19:42:45
- * @LastEditTime: 2022-08-10 22:08:27
+ * @LastEditTime: 2022-08-13 16:58:13
  * @Description: 
  */
 
@@ -20,15 +20,15 @@ async fn main() -> Result<(), Box<dyn Error>> {
     info!("{:#?}", config);
 
     debug!("debug is ok");
-    // let state = config::init_state(&config).await;
 
     let addr = SocketAddr::from(([0, 0, 0, 0], config.server.port));
     info!("Server bind at: {:?}", addr);
 
     axum::Server::bind(&addr)
-        .serve(config::routes::app().into_make_service())
+        .serve(config::routes::app(&config).into_make_service())
         .await?;
     
     Ok(())
 }
+
 

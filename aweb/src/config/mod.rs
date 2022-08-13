@@ -1,7 +1,7 @@
-/**
+/***
  * @Author: plucky
  * @Date: 2022-08-10 19:49:39
- * @LastEditTime: 2022-08-10 22:04:24
+ * @LastEditTime: 2022-08-13 17:11:54
  * @Description: 
  */
 
@@ -25,8 +25,8 @@ const CONFIGFILE: &str = "app.yaml";
 pub fn load_config() -> Config {
     let path = std::env::current_exe().unwrap().parent().unwrap().join("");
     println!("{:?}", path);
-    std::env::set_current_dir(path).unwrap();
-
+    // std::env::set_current_dir(path).unwrap();
+    // let yaml_str = read_to_string(CONFIGFILE);
     serde_any::from_file::<Config,_>(CONFIGFILE).unwrap_or_default()
 
 }
@@ -52,11 +52,11 @@ pub fn init_log(config: &LogConfig) {
     
 }
 
-#[derive(Debug, Deserialize,Default)]
+#[derive(Debug, Deserialize, Default)]
 pub struct Config {
-   pub server: ServerConfig,
-   pub log: LogConfig,
-    
+    pub server: ServerConfig,
+    pub log: LogConfig,
+    pub service: Vec<RouteConfig>,
 }
 
 // write with
@@ -78,7 +78,7 @@ impl Default for ServerConfig {
 
 #[derive(Debug, Deserialize)]
 pub struct LogConfig{
-    level: String,
+    pub level: String,
     // tofile: bool,
 }
 
@@ -88,4 +88,10 @@ impl Default for LogConfig {
             level: "info".to_string(),
         }
     }
+}
+
+#[derive(Debug, Deserialize)]
+pub struct RouteConfig{
+    pub path: String,
+    pub dir: String,
 }

@@ -4,6 +4,6 @@ server:
 log:
  level: info
 
-static:
- - path: /
+service:
+ - path: /a
    dir: .
