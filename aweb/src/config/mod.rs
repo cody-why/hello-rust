@@ -1,7 +1,7 @@
 /***
  * @Author: plucky
  * @Date: 2022-08-10 19:49:39
- * @LastEditTime: 2022-08-13 17:11:54
+ * @LastEditTime: 2022-08-13 18:17:41
  * @Description: 
  */
 
@@ -25,7 +25,7 @@ const CONFIGFILE: &str = "app.yaml";
 pub fn load_config() -> Config {
     let path = std::env::current_exe().unwrap().parent().unwrap().join("");
     println!("{:?}", path);
-    // std::env::set_current_dir(path).unwrap();
+    std::env::set_current_dir(path).unwrap();
     // let yaml_str = read_to_string(CONFIGFILE);
     serde_any::from_file::<Config,_>(CONFIGFILE).unwrap_or_default()
 
