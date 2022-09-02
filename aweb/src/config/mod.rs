@@ -1,7 +1,7 @@
 /***
  * @Author: plucky
  * @Date: 2022-08-10 19:49:39
- * @LastEditTime: 2022-08-13 18:17:41
+ * @LastEditTime: 2022-08-26 23:44:49
  * @Description: 
  */
 
@@ -26,6 +26,7 @@ pub fn load_config() -> Config {
     let path = std::env::current_exe().unwrap().parent().unwrap().join("");
     println!("{:?}", path);
     std::env::set_current_dir(path).unwrap();
+    
     // let yaml_str = read_to_string(CONFIGFILE);
     serde_any::from_file::<Config,_>(CONFIGFILE).unwrap_or_default()
 
@@ -44,11 +45,17 @@ pub fn init_log(config: &LogConfig) {
     .with_max_level(Level::from_str(&config.level).unwrap())
     .with_writer(std::io::stdout)
     // .with_writer(non_blocking)
+    // 去掉颜色
+    .with_ansi(false)
     .with_target(true)
     .with_timer(local_time)
     .with_line_number(true)
     .with_file(false)
     .init();
+
+    if cfg!(target_os = "windows") {
+        
+    }
     
 }
 
