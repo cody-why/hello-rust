@@ -1,9 +1,11 @@
-/***
+/**
  * @Author: plucky
- * @Date: 2022-08-10 19:42:45
- * @LastEditTime: 2022-08-13 16:58:13
+ * @Date: 2022-08-13 18:15:19
+ * @LastEditTime: 2022-09-16 18:14:37
  * @Description: 
  */
+
+
 
 use std::error::Error;
 use std::net::SocketAddr;
@@ -21,7 +23,7 @@ async fn main() -> Result<(), Box<dyn Error>> {
 
     debug!("debug is ok");
 
-    let addr = SocketAddr::from(([0, 0, 0, 0], config.server.port));
+    let addr = SocketAddr::from(([0,0,0,0], config.server.port));
     info!("Server bind at: {:?}", addr);
 
     axum::Server::bind(&addr)
