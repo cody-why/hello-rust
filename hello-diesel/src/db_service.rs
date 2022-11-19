@@ -7,10 +7,10 @@ use crate::{*, models::*};
 pub fn query_posts() {
     use schema::posts::dsl::*;
     // let connection = establish_connection();
-    let connection = get_connection();
+    let connection =&mut get_connection();
     let results = posts.filter(published.eq(true))
         .limit(5)
-        .load::<Post>(&connection)
+        .load::<Post>(connection)
         .expect("Error loading posts");
 
     println!("Displaying {} posts", results.len());
@@ -45,15 +45,16 @@ pub fn query_posts() {
 pub fn query_by_sql() {
     use diesel::sql_types::*;
     
-    let connection = get_connection();
-    let results = connection.execute("SELECT * FROM posts WHERE published = 1 LIMIT 5").unwrap();
+    let connection = &mut get_connection();
+    let results = sql_query("SELECT * FROM posts WHERE published = 1 LIMIT 5").execute(connection).unwrap();
+    // let results = connection.execute("SELECT * FROM posts WHERE published = 1 LIMIT 5").unwrap();
     println!("execute results {:?}", results);
 
     //  用sql_query查询
     let results = sql_query("SELECT * FROM short_links WHERE id > ?  limit 3")
         .bind::<Integer, _>(1)
         // .bind::<Text, _>("Tess")
-        .get_results::<ShortLinks>(&connection);
+        .get_results::<ShortLinks>(connection);
         // 这里一直报错,返回类型不匹配,原来是ShortLinks的id类型不对,应该是u32,之前是i32,i64,u64,都不对
     println!("{:?}", results);
     println!("--------------------");
@@ -65,7 +66,7 @@ pub fn query_by_sql() {
 pub fn insert_post(){
     use schema::posts::dsl::*;
     // let connection = establish_connection();
-    let connection = get_connection();
+    let connection = &mut get_connection();
 
     // 用定义的struct插入
     let new_post = NewPost {
@@ -75,7 +76,7 @@ pub fn insert_post(){
     };
     let inserted = diesel::insert_into(posts)
         .values(&new_post)
-        .execute(&connection);
+        .execute(connection);
         // .expect("Error saving new post");
     println!("Inserted: {:?}",inserted);
     
@@ -88,7 +89,7 @@ pub fn insert_post(){
     ];
     let inserted = diesel::insert_into(posts)
         .values(&new_posts)
-        .execute(&connection);
+        .execute(connection);
         // .expect("Error saving new post");
     println!("Inserted: {:?}",inserted);
 
@@ -100,10 +101,10 @@ pub fn update_post(){
     use schema::posts::dsl::*;
     let ids:i64 = 2;
     // let connection = establish_connection();
-    let connection = get_connection();
+    let connection =&mut get_connection();
     let updated = diesel::update(posts.find(ids))
         .set(title.eq("A new title"))
-        .execute(&connection);
+        .execute(connection);
         //.get_result::<Post>(&connection)
         //.expect("Error updating post");
      println!("Updated {:?} posts", updated);
@@ -112,7 +113,7 @@ pub fn update_post(){
     let target = posts.filter(published.eq(false));
     let _post = diesel::update(target)
         .set((published.eq(true), title.eq("A published title")))
-        .execute(&connection);
+        .execute(connection);
         //.expect(&format!("Unable to find post {}", ids));
     println!("Updated posts: {:?}", _post);
 }
@@ -122,14 +123,14 @@ pub fn delete_post(){
     use schema::posts::dsl::*;
 
     // let connection = establish_connection();
-    let connection = get_connection();
+    let connection =&mut get_connection();
     let query = diesel::delete(posts.find(1));
+    println!("Debug_query: {:?}", debug_query::<Mysql, _>(&query));
     
-    let deleted_post = query.execute(&connection)
+    let deleted_post = query.execute(connection)
         .expect("Error deleting post");
     println!("Deleted {} posts", deleted_post);
 
-    println!("Debug_query: {:?}", debug_query::<Mysql, _>(&query));
 }
 
 // 分页查询
@@ -151,12 +152,12 @@ pub fn paginate_posts() {
 // Post分页, 参数是页码和每页的数量
 pub fn paginate(page: i32, per_page: i32) -> Vec<Post> {
     use schema::posts::dsl::*;
-    let connection = get_connection();
+    let connection =&mut get_connection();
     let query = posts.filter(published.eq(true))
     .limit(per_page as i64)
     .offset(((page-1) * per_page) as i64);
     
-    let results = query.load::<Post>(&connection)
+    let results = query.load::<Post>(connection)
     .expect("Error loading posts");
 
     println!("Debug_query: {:?}", debug_query::<Mysql, _>(&query));
@@ -166,10 +167,10 @@ pub fn paginate(page: i32, per_page: i32) -> Vec<Post> {
 // Post分页有多少页,参数是每页的数量
 pub fn get_total_pages(per_page: i32) -> i32 {
     use schema::posts::dsl::*;
-    let connection = get_connection();
+    let connection =&mut get_connection();
     let total_count = posts.filter(published.eq(true))
         .count()
-        .get_result::<i64>(&connection)
+        .get_result::<i64>(connection)
         .unwrap_or_else(|e| {println!("Error loading posts {}",e);0});
     (total_count as i32 + per_page - 1) / per_page
 }
@@ -179,7 +180,7 @@ pub fn get_total_pages(per_page: i32) -> i32 {
 // Post分页, 参数是页码和每页的数量,返回(页总数,每页的数据)
 pub fn paginate_with_tuple(page: i32, per_page: i32) -> (i32, Vec<Post>) {
     use schema::posts::dsl::*;
-    let connection = get_connection();
+    let connection =&mut get_connection();
     
     let select = posts.filter(published.eq(true));
     // 查询分页数据
@@ -187,13 +188,13 @@ pub fn paginate_with_tuple(page: i32, per_page: i32) -> (i32, Vec<Post>) {
     .limit(per_page as i64)
     .offset(((page-1) * per_page) as i64);
     
-    let results = query.load::<Post>(&connection)
+    let results = query.load::<Post>(connection)
     .unwrap_or_else(|e| {println!("Error loading posts {}",e);vec![]});
 
     //查询页总数
     let total_count = select
         .count()
-        .get_result::<i64>(&connection)
+        .get_result::<i64>(connection)
         .unwrap_or_else(|e| {println!("Error loading posts {}",e);0});
     let pages =(total_count as i32 + per_page - 1) / per_page;
     println!("Debug_query: {:?}", debug_query::<Mysql, _>(&query));

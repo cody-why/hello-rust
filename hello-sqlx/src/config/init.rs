@@ -1,12 +1,14 @@
-/***
+/*
  * @Author: plucky
  * @Date: 2022-09-04 19:58:56
- * @LastEditTime: 2022-09-06 16:29:09
+ * @LastEditTime: 2022-11-18 20:07:56
  * @Description: 
  */
 
 use tracing_appender::non_blocking::WorkerGuard;
 use tracing_subscriber::{fmt::{time::OffsetTime, self}, EnvFilter, prelude::__tracing_subscriber_SubscriberExt, util::SubscriberInitExt};
+
+use crate::repository::set_state;
 
 use super::{*, database::*};
 
@@ -23,10 +25,11 @@ pub fn load_config() -> Config {
 
 }
 
-pub async fn init_state(config: &Config)->state::State{
+pub async fn init_state(){
+    let config =load_config();
     let mysql_pool = init_mysql_pool(&config.sql).await;
-    state::State::new(mysql_pool)
-   
+    let state = state::State::new(mysql_pool);
+    set_state(state);
 }
 
 pub fn init_log(config: &LogConfig)-> Option<WorkerGuard> {

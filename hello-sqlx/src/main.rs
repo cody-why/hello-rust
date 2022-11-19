@@ -1,7 +1,7 @@
 /*
  * @Author: plucky
  * @Date: 2022-09-04 00:49:25
- * @LastEditTime: 2022-10-22 01:22:12
+ * @LastEditTime: 2022-11-18 20:07:27
  * @Description: 
  */
 
@@ -9,16 +9,16 @@ use hello_sqlx::{config::*, repository::{*, model::{user::User}}};
 
 #[tokio::main]
 async fn main() -> Result<(), Box<dyn std::error::Error>> {
-    let config =load_config();
-    let state = init_state(&config).await;
-    set_state(state);
+    init_state().await;
+    
 
     // println!("users: {:?}", users);
-    let pool = get_conn();
+    let pool = get_pool();
     let user = User{
         id: 0,
         name: "jack3".to_string(),
         age: 18,
+        adr: "beijing".to_string(),
     };
     // user.insert(pool).await.unwrap();
         

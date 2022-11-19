@@ -7,9 +7,10 @@ log:
 
 sql:
  # mysql://user:pwd@host:port/db
- url: mysql://root:newpassword@192.168.1.199:3306/hello
- max_connections: 5
- min_connections: 1
+ #url: mysql://root:newpassword@192.168.1.199:3306/hello?rewriteBatchedStatements=true
+ url: mysql://root:HWbLk6QboXUwG6Xx@47.57.159.69:3306/hello?rewriteBatchedStatements=true
+ max_connections: 100
+ min_connections: 10
 
 redis:
  # redis://user:pwd@host:port/db
