@@ -8,6 +8,7 @@
 pub mod schema;
 pub mod models;
 pub mod db_service;
+mod test_batch;
 
 pub use tracing::*;
 
@@ -57,7 +58,7 @@ pub fn init_pool() -> Pool<MysqlPool> {
     // 创建一个新的连接池
     let manager = ConnectionManager::<MysqlConnection>::new(url);
     let pool = Pool::builder()
-        .max_size(10)
+        //  .max_size(100)
         .min_idle(Some(1))
         .test_on_check_out(true)
         .error_handler(Box::new(LoggingHandler{}))

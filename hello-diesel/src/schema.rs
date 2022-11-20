@@ -1,3 +1,4 @@
+
 table! {
     posts (id) {
         id -> Bigint,
@@ -18,6 +19,7 @@ table! {
     users (id) {
         id -> Unsigned<Bigint>,
         name -> Varchar,
+        age -> Unsigned<Tinyint>,
     }
 }
 

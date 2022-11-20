@@ -1,7 +1,7 @@
-/*** 
+/*
  * @Author: plucky
- * @Date: 2022-07-05 21:46:32
- * @LastEditTim&e: 2022-07-06 00:00:49
+ * @Date: 2022-07-10 10:25:05
+ * @LastEditTime: 2022-11-20 11:46:58
  * @Description: 
  */
 
@@ -21,10 +21,10 @@ fn main() {
 
     query_by_sql();
 
-    query_posts();
+    // query_posts();
     println!("***");
-    //insert_post();
-    //query_posts();
+    // insert_post();
+    query_posts();
     //println!("***");
     update_post();
     //query_posts();
@@ -33,7 +33,7 @@ fn main() {
     // query_posts();
     paginate_posts();
 
-    thread::sleep(std::time::Duration::new(200, 0));
+    thread::sleep(std::time::Duration::new(20, 0));
 }
 
 fn init_log(){
