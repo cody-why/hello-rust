@@ -27,7 +27,7 @@ mod tests {
 
     // 批量插入1000000条数据 
     // 连接url加入参数：?rewriteBatchedStatements=true
-    // 使用sql测试,2000条一次,时间为5.8s,1000/次,6.6s
+    // 使用sql测试,2000条一次,时间为5.9s,1000/次,6.6s
     pub async fn insert_many1() -> Result<(), sqlx::Error> {
         // let conn = get_pool();
     
