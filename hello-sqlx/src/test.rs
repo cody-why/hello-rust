@@ -2,10 +2,10 @@
 mod tests {
     #![allow(unused_imports)]
     #![allow(dead_code)]
-    use futures::{ StreamExt};
+    // use futures::{ StreamExt};
     use sqlx::{Row};
     use tokio::sync::mpsc;
-    use rayon::prelude::*;
+    // use rayon::prelude::*;
     use crate::{config::init_state, repository::get_pool};
 
 
@@ -19,7 +19,7 @@ mod tests {
         delete_all().await.unwrap();
         let t = time::Instant::now();
 
-        insert_many().await.unwrap();
+        insert_many1().await.unwrap();
 
         query_count().await.unwrap();
         println!("time: {:?}", t.elapsed().as_seconds_f32());
@@ -27,27 +27,25 @@ mod tests {
 
     // 批量插入1000000条数据 
     // 连接url加入参数：?rewriteBatchedStatements=true
-    // 远程测试,2000条一次,时间为6.2s
-    pub async fn insert_many() -> Result<(), sqlx::Error> {
-        let conn = get_pool();
+    // 使用sql测试,2000条一次,时间为5.8s,1000/次,6.6s
+    pub async fn insert_many1() -> Result<(), sqlx::Error> {
+        // let conn = get_pool();
     
         // let mut tasks = Vec::with_capacity(1000);
         let (tx, mut rx) = mpsc::channel(100);
 
-        // let mut tx = conn.begin().await?;
+        // 
         for i in 0..500 {
-            let mut sql = "insert into users(name, age) values".to_string();
-            for j in 0..2000 {
-                sql.push_str(&format!("('{}', {}),", i*1000+j, 18));
-            }
-            sql.pop();
-            
-            // sqlx::query(&sql).execute_many(conn).await.next().await;
-
+            let total = 2000;
             let tx = tx.clone();
-            
             let task = async move {
-                // let  conn = get_pool();
+                let mut sql = "insert into users(name, age) values".to_string();
+                for j in 0..total {
+                    sql.push_str(&format!("('{}', {}),", i*total+j, 18));
+                }
+                sql.pop();
+
+                let  conn = get_pool();
                 sqlx::query(&sql).execute(conn).await.unwrap();
                 tx.send(1).await.unwrap();
             };
@@ -55,7 +53,6 @@ mod tests {
             tokio::spawn(task);
         }
         
-        // tx.commit().await?;
 
         // futures::future::join_all(tasks).await;
         drop(tx);
@@ -103,7 +100,7 @@ mod tests {
                     };
                     user.insert(conn).await.unwrap();
                 }
-            tx.send(1).await.unwrap();
+                tx.send(1).await.unwrap();
             });
         }
         // (0..500).into_par_iter().for_each(|i| {

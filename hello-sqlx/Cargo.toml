@@ -25,5 +25,6 @@ tracing-subscriber = { version = "0.3", features = ["time","env-filter"] }
 tracing-appender = { version = "0.2"}
 time = {version = "0.3",features = ["macros"]}
 
-futures = "0.3"
-rayon = "1.5"
+#futures = "0.3"
+#并发Iter
+#rayon = "1.5"
