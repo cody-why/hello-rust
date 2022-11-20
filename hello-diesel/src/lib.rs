@@ -18,7 +18,6 @@ extern crate diesel;
 
 
 use diesel::{r2d2::{ConnectionManager, PooledConnection, HandleError, HandleEvent, event::TimeoutEvent}};
-use dotenv::dotenv;
 use std::{env, error};
 
 use diesel::prelude::*;
@@ -51,7 +50,7 @@ pub fn get_connection() ->MysqlPooledConnection{
 
 // 初始化连接池
 pub fn init_pool() -> Pool<MysqlPool> {
-    dotenv().ok();
+    dotenv::dotenv().ok();
     let url = env::var("DATABASE_URL").expect("DATABASE_URL must be set");
 
     

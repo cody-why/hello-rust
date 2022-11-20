@@ -7,4 +7,4 @@
 
 pub mod repository;
 pub mod config;
-mod test;
+mod test_batch;

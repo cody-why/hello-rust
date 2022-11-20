@@ -1,7 +1,7 @@
 /*
  * @Author: plucky
  * @Date: 2022-09-04 19:33:16
- * @LastEditTime: 2022-11-18 21:19:41
+ * @LastEditTime: 2022-11-20 17:26:37
  * @Description: 
  */
 
@@ -17,6 +17,8 @@ use super::*;
 
 
 pub async fn init_mysql_pool(config: &MysqlConfig) -> Pool<MySql> {
+    dotenv::dotenv().ok();
+    let url = &std::env::var("DATABASE_URL").expect("DATABASE_URL must be set");
     // let mut opt =  MySqlConnectOptions::new().
     // opt.log_statements(tracing::log::LevelFilter::Off);
    
@@ -27,7 +29,7 @@ pub async fn init_mysql_pool(config: &MysqlConfig) -> Pool<MySql> {
         // .max_lifetime(Some(Duration::from_secs(60 * 60)))
         .acquire_timeout(Duration::from_secs(60 * 60))
         //.connect_with(opt).await;
-        .connect(&config.url).await;
+        .connect(url).await;
     debug!("mysql pool: {:?}", pool);
     pool.unwrap()
 }
