@@ -11,7 +11,7 @@ opt-level = 3
 
 [dependencies]
 tokio = { version = "1", features = ["full"] }
-sqlx = { version = "0.6", features = ["mysql", "runtime-tokio-native-tls", "offline"] }
+sqlx = { version = "0.6", features = ["mysql", "runtime-async-std-native-tls", "offline"] }#"runtime-tokio-native-tls","runtime-async-std-native-tls"
 # co-orm = { path = "../libs/co-orm" }
 co-orm = {version = "0.2.2", features = ["mysql"]}
 
@@ -28,5 +28,11 @@ time = {version = "0.3",features = ["macros"]}
 dotenv = "0.15"
 
 #futures = "0.3"
-#并发Iter
+
 #rayon = "1.5"
+
+#测试
+[dev-dependencies]
+#并发Iter
+rayon = "1.5"
+async-std = { version = "1" }

@@ -1,9 +1,10 @@
-/*** 
+/*
  * @Author: plucky
- * @Date: 2022-07-08 10:09:41
- * @LastEditTime: 2022-07-10 07:35:09
+ * @Date: 2022-07-10 10:25:05
+ * @LastEditTime: 2022-11-21 09:23:22
  * @Description: 
  */
+
 
 use std::time::Duration;
 
@@ -23,7 +24,7 @@ pub async fn init_mysql_pool() -> DatabaseConnection {
     dotenv::dotenv().ok();
     let url = dotenv::var("DATABASE_URL").unwrap();
     let mut opt = ConnectOptions::new(url);
-    opt.max_connections(10)
+    opt.max_connections(100)
     .min_connections(1)
     .connect_timeout(Duration::from_secs(30))
     .idle_timeout(Duration::from_secs(600))
@@ -37,6 +38,7 @@ pub async fn init_mysql_pool() -> DatabaseConnection {
 
 // 单连接
 pub async fn set_up_db() -> Result<DatabaseConnection, DbErr> {
+    dotenv::dotenv().ok();
     let url = dotenv::var("DATABASE_URL").unwrap();
     let db = sea_orm::Database::connect(url).await?;
 

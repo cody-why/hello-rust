@@ -31,8 +31,8 @@ async fn main() {
 async fn run() -> Result<(), DbErr> {
     SQLPOOL.set(config::init_mysql_pool().await).unwrap();
 
-    updat_db().await?;
-    // query_db().await?;
+    // updat_db().await?;
+    query_db().await?;
     
     query_db_page().await?;
     Ok(())
